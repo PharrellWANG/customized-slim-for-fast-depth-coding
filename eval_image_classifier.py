@@ -172,7 +172,9 @@ def main(_):
             logits, labels, 25),
         'Recall_30': slim.metrics.streaming_recall_at_k(
             logits, labels, 25),
+        'confusion_matrix': tf.confusion_matrix(labels, predictions, 37),
     })
+
 
     # Print the summaries to screen.
     for name, value in names_to_values.items():
