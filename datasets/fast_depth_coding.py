@@ -29,13 +29,13 @@ from datasets import dataset_utils
 
 slim = tf.contrib.slim
 
-RESHAPE = 16
+RESHAPE = 32
 
 # _FILE_PATTERN = 'flowers_%s_*.tfrecord'
 _FILE_PATTERN = '%sx%s_%s.tfrecord'
 # 16x16_training.tfrecord
 
-SPLITS_TO_SIZES = {'training': 8301, 'validating': 2767}
+SPLITS_TO_SIZES = {'training': 62271, 'validating': 20757}
 
 _NUM_CLASSES = 37
 
@@ -45,7 +45,8 @@ _ITEMS_TO_DESCRIPTIONS = {
 }
 
 
-def get_split(split_name, dataset_dir, file_pattern=None, reader=None, reshape=None, training_size=None, validating_size=None):
+def get_split(split_name, dataset_dir, file_pattern=None, reader=None,
+              reshape=None, training_size=None, validating_size=None):
     """Gets a dataset tuple with instructions for reading flowers.
 
     Args:
@@ -70,7 +71,8 @@ def get_split(split_name, dataset_dir, file_pattern=None, reader=None, reshape=N
     if not training_size:
         split_to_sizes = SPLITS_TO_SIZES
     else:
-        split_to_sizes = {'training': training_size, 'validating': validating_size}
+        split_to_sizes = {'training': training_size,
+                          'validating': validating_size}
 
     if not reshape:
         reshape = RESHAPE
@@ -89,9 +91,20 @@ def get_split(split_name, dataset_dir, file_pattern=None, reader=None, reshape=N
     if reader is None:
         reader = tf.TFRecordReader
 
+    # keys_to_features = {
+    #     'image/encoded': tf.FixedLenFeature((), tf.string, default_value=''),
+    #     'image/format': tf.FixedLenFeature((), tf.string, default_value='raw'),
+    #     'image/class/label': tf.FixedLenFeature(
+    #         [1], tf.int64, default_value=tf.zeros([1], dtype=tf.int64)),
+    # }
+    #
+    # items_to_handlers = {
+    #     'image': slim.tfexample_decoder.Image(shape=[16, 16, 1], channels=1),
+    #     'label': slim.tfexample_decoder.Tensor('image/class/label', shape=[]),
+    # }
     keys_to_features = {
         'image/encoded': tf.FixedLenFeature((), tf.string, default_value=''),
-        'image/format': tf.FixedLenFeature((), tf.string, default_value='raw'),
+        'image/format': tf.FixedLenFeature((), tf.string, default_value='png'),
         'image/class/label': tf.FixedLenFeature(
             [], tf.int64, default_value=tf.zeros([], dtype=tf.int64)),
     }

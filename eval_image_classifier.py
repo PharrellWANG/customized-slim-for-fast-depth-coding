@@ -158,6 +158,20 @@ def main(_):
         'Accuracy': slim.metrics.streaming_accuracy(predictions, labels),
         'Recall_5': slim.metrics.streaming_recall_at_k(
             logits, labels, 5),
+        'Recall_10': slim.metrics.streaming_recall_at_k(
+            logits, labels, 10),
+        'Recall_15': slim.metrics.streaming_recall_at_k(
+            logits, labels, 15),
+        'Recall_20': slim.metrics.streaming_recall_at_k(
+            logits, labels, 20),
+        'Recall_25': slim.metrics.streaming_recall_at_k(
+            logits, labels, 25),
+        'Recall_27': slim.metrics.streaming_recall_at_k(
+            logits, labels, 25),
+        'Recall_28': slim.metrics.streaming_recall_at_k(
+            logits, labels, 25),
+        'Recall_30': slim.metrics.streaming_recall_at_k(
+            logits, labels, 25),
     })
 
     # Print the summaries to screen.
@@ -189,7 +203,7 @@ def main(_):
       eval_op=list(names_to_updates.values()),
       variables_to_restore=variables_to_restore,
       summary_op=tf.summary.merge_all(),
-      # eval_interval_secs=FLAGS.eval_interval,
+      eval_interval_secs=FLAGS.eval_interval,
       session_config=config) # <---- the actual fix
 
     # slim.evaluation.evaluate_once(
